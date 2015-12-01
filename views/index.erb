@@ -1,0 +1,11 @@
+<div>
+  <strong>All Listings</strong>
+</div>
+<br>
+<% @listings.each do |listing| %>
+  <div>
+    <strong><span><%= (listing.id).to_s %>.</span></strong>
+    <span><%= listing.name %></span>
+    <span> | Status = <%= listing.status %> </span>
+  </div>
+<% end %>
