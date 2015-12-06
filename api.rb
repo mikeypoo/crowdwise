@@ -6,7 +6,7 @@ require 'data_mapper'
 require_relative 'models/listing'
 
 # establish database connection
-DataMapper.setup(:default, "sqlite3:#{Dir.pwd}/db/dev.db")
+DataMapper.setup(:default, "postgres://mike:dairyninja9@localhost/cwdev")
 DataMapper.auto_upgrade!
 
   ##################
@@ -35,8 +35,11 @@ end
 
 put '/listings/:id' do |id|
   listing = Listing.get(id)
-  return unless listing && params[:status] && Listing::STATUSES.has_key?(params[:status].to_sym)
-  listing.update(status: params[:status])
+  return unless listing
+  new_status = params[:status] || listing.status
+  return unless Listing::STATUSES.has_key?(new_status.to_sym)
+  new_name = params[:name] || listing.name
+  listing.update(name: new_name, status: params[:status])
 end
 
 post '/create_listing' do
