@@ -3,10 +3,12 @@ require 'rubygems'
 require 'sinatra'
 require 'json'
 require 'data_mapper'
+require 'yaml'
 require_relative 'models/listing'
 
 # establish database connection
-DataMapper.setup(:default, "postgres://mike:dairyninja9@localhost/cwdev")
+db_pass = YAML.load_file('config/database.yml')['password']
+DataMapper.setup(:default, "postgres://mike:#{db_pass}@localhost/cwdev")
 DataMapper.auto_upgrade!
 
   ##################
