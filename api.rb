@@ -7,8 +7,10 @@ require 'yaml'
 require_relative 'models/listing'
 
 # establish database connection
-db_pass = YAML.load_file('config/database.yml')['password']
-DataMapper.setup(:default, "postgres://mike:#{db_pass}@localhost/cwdev")
+db_config = YAML.load_file('config/database.yml')[ENV['ENV']]
+db_name = db_config['name']
+db_pass = db_config['password']
+DataMapper.setup(:default, "postgres://mike:#{db_pass}@localhost/#{db_name}")
 DataMapper.auto_upgrade!
 
   ##################
@@ -16,12 +18,7 @@ DataMapper.auto_upgrade!
   ##################
 
 get '/' do
-  @listings = [ ]
-  Listing.all.count.times do |index|
-    if listing = Listing.get(index + 1)
-      @listings.push(Listing.get(index + 1))
-    end
-  end
+  @listings = Listing.all
   erb :index
 end
 
