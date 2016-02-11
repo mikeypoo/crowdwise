@@ -32,7 +32,6 @@ describe 'the listing model' do
   end
 
   context 'deleted listing' do
-    # not active listening, which my therapist says I should work on
     let(:listing) do
       l = Listing.new
       l.name = 'Niles'
